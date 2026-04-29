@@ -18,7 +18,7 @@ Running a printing shop or computer service center means constantly dealing with
 
 **File2Print fixes this entirely.**
 
-It provides a simple web interface where clients enter their name and upload their files. Behind the scenes, the system automatically creates a dedicated folder inside `/uploads` named after the client, and places all their files neatly inside it — no manual sorting, no confusion, no lost files.
+It provides a simple web interface where clients enter their name and upload their files. Behind the scenes, the system automatically creates a dedicated folder inside `/uploads` named after the client and date, it places all their files neatly inside it — no manual sorting, no confusion, no lost files.
 
 > ✅ Perfect for **printing services**, **computer repair shops**, **internet cafés**, and **any business that receives files from multiple clients**.
 
@@ -114,16 +114,16 @@ After a few client submissions, your `/uploads` directory will look like this:
 
 ```
 uploads/
-├── Juan dela Cruz/
+├── Juan dela Cruz-16-03-2026/
 │   ├── data.json
 │   ├── thesis_final.pdf
 │   └── ID_photo.jpg
 │
-├── Maria Santos/
+├── Maria Santos-16-03-2026/
 │   ├── data.json
 │   └── resume.docx
 │
-└── John Smith/
+└── John Smith-16-03-2026/
     ├── data.json
     ├── brochure.pdf
     └── logo.png
