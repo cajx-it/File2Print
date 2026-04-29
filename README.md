@@ -44,7 +44,7 @@ Client fills out the form (name + files)
 Server receives the submission
         │
         ▼
-Creates /uploads/<client-name>/ folder
+Creates /uploads/<client-name>-<date>/ folder
         │
         ├── data.json        ← client info & submission metadata
         ├── file1.pdf
