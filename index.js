@@ -89,7 +89,7 @@ form.onsubmit = async (e) => {
 
   try {
     const response = await fetch(
-      "http://192.168.1.11:8080/upload",
+      "http://localhost:8080/upload",
       {
         method: "POST",
         body: formData,

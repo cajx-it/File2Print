@@ -2,6 +2,7 @@ let http = require("http");
 let fs = require("fs");
 let path = require("path");
 let formidable = require("formidable");
+const { response } = require("express");
 
 
 
@@ -71,7 +72,7 @@ const server = http.createServer((req, res) => {
 
         //CREATE A SPECIFIC FOLDER FOR EACH UPLOAD
         try {
-          fs.mkdirSync(`./uploads/${userName[0]}-${localeDate}`);
+          fs.mkdirSync(`./uploads/Todo/${userName[0]}-${localeDate}`);
         } catch (mkdirErr) {
           if (mkdirErr.code !== "EEXIST") {
             throw mkdirErr; // Only ignore "folder already exists" errors
@@ -85,7 +86,7 @@ const server = http.createServer((req, res) => {
         // MOVE EACH UPLOADED FILE TO THE TARGET DIRECTORY
         uploadedFiles.forEach((file) => {
 
-          const destPath = path.join(`./uploads/${userName[0]}-${localeDate}`, file.originalFilename);
+          const destPath = path.join(`./uploads/Todo/${userName[0]}-${localeDate}`, file.originalFilename);
 
           //TRY TO RENAME (MOVE) THE FILE, IF IT FAILS (E.G. CROSS-DEVICE), THEN COPY AND DELETE
           try {
@@ -116,12 +117,53 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.url === "/" && req.method.toLowerCase() === "get") {
+    const filePath = path.join(__dirname, "index.html");
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("index.html not found");
+        return;
+      }
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(data);
+    });
+    return;
+  }
+  
+  if (req.method.toLowerCase() === "get") {
+    const filePath = path.join(__dirname, req.url);
+    const extMap = {
+      ".html": "text/html",
+      ".css":  "text/css",
+      ".js":   "application/javascript",
+      ".png":  "image/png",
+      ".jpg":  "image/jpeg",
+      ".svg":  "image/svg+xml",
+      ".ico":  "image/x-icon",
+    };
+
+    const ext = path.extname(filePath);
+    const contentType = extMap[ext] || "application/octet-stream";
+
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("File not found");
+        return;
+      }
+      res.writeHead(200, { "Content-Type": contentType });
+      res.end(data);
+    });
+    return;
+  }
+
   res.writeHead(404);
   res.end("Route not found");
 });
 
 
 
-server.listen(8080, "192.168.1.11", () => {
-  console.log("Server running at http://192.168.1.11:8080/");
+server.listen(8080, "0.0.0.0", () => {
+  console.log("Server running at http://0.0.0.0:8080/");
 });
